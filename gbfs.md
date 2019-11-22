@@ -18,7 +18,7 @@ This document explains the types of files and data that comprise the General Bik
     * [system_regions.json](#system_regionsjson)
     * [system_pricing_plans.json](#system_pricing_plansjson)
     * [system_alerts.json](#system_alertsjson)
-* [Deep Links](#Deep-Links)
+* [Deep Links - Analytics and Examples](#Deep-Links)
 * [Possible Future Enhancements](#possible-future-enhancements)
 
 ## Revision History
@@ -340,6 +340,9 @@ alerts            | Yes         | Array - alert objects each indicating a separa
 \- last_updated    | Optional    | Integer POSIX timestamp indicating the last time the info for the particular alert was updated
 
 ## Deep Links
+
+Deep links to iOS, Android, and web apps are supported via URIs in the `system_information.json`, `station_information.json`, and `free_bike_status.json` files. The following sections describe how analytics can be added to these URIs, as well as some examples.
+
 ### Analytics
 
 In all of the `rental_*_uri `fields, a viewing app can report the origin of a deep link to request to a rental app by appending the `client_id` parameter to the URI along with the domain name for the viewing app. 
