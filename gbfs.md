@@ -172,13 +172,13 @@ phone_number      | Optional  | A single voice telephone number for the specifie
 email             | Optional  | A single contact email address for customers to address questions about the system
 timezone          | Yes       | The time zone where the system is located. Time zone names never contain the space character but may contain an underscore. Please refer to the "TZ" value in https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a list of valid values
 license_url       | Optional  | A fully qualified URL of a page that defines the license terms for the GBFS data for this system, as well as any other license terms the system would like to define (including the use of corporate trademarks, etc)
-rental_apps       | Optional  | A JSON object that contains rental app information in the android and ios JSON objects. 
-  \- android      | Optional  | A JSON object that contains rental app download and app discovery information for the Android platform in the store_uri and discovery_uri fields.       
-&emsp;- store URI | Conditionally Required  | A URI where the rental Android app can be downloaded from. Typically this will be a URI to an app store such as Google Play. If the URI points to an app store such as Google Play, the URI should follow Android best practices so the viewing app can directly open the URI to the native app store app instead of a website. If a rental_uris.android field is populated then this field is required, otherwise it is optional. See the “Analytics” section for how viewing apps can report the origin of the deep link to rental apps. Example value: https://play.google.com/store/apps/details?id=com.abcrental.android
-&emsp;- discovery URI | Conditionally Required | A URI that can be used to discover if the rental Android app is installed on the device (e.g., using PackageManager.queryIntentActivities()). This intent is used by viewing apps prioritize rental apps for a particular user based on whether they already have a particular rental app installed. This field is required if a rental_uris.android field is populated, otherwise it is optional. Example value: com.abcrental.android:// 
-  \- ios          | Optional  | A JSON object that contains rental information for the iOS platform in the store_uri and discovery_uri fields.
-&emsp;- store URI | Conditionally Required  | A URI where the rental iOS app can be downloaded from. Typically this will be a URI to an app store such as the Apple App Store. If the URI points to an app store such as the Apple App Store, the URI should follow iOS best practices so the viewing app can directly open the URI to the native app store app instead of a website. If a rental_uris.ios field is populated then this field is required, otherwise it is optional. See the “Analytics” section for how viewing apps can report the origin of the deep link to rental apps. Example value: https://apps.apple.com/app/apple-store/id123456789
-&emsp;- discovery URI  | Conditionally Required | A URI that can be used to discover if the rental iOS app is installed on the device (e.g., using [UIApplication canOpenURL:]). This intent is used by viewing apps prioritize rental apps for a particular user based on whether they already have a particular rental app installed. This field is required if a rental_uris.ios field is populated, otherwise it is optional. Example value: com.abcrental.ios://
+rental_apps       | Optional  | A JSON object that contains rental app information in the android and ios JSON objects. See the [Deep Links](#Deep-Links) section for parameters.
+  \- android      | Optional  | A JSON object that contains rental app download and app discovery information for the Android platform in the store_uri and discovery_uri fields. See the [Deep Links](#Deep-Links) section for parameters.      
+&emsp;- store URI | Conditionally Required  | A URI where the rental Android app can be downloaded from. Typically this will be a URI to an app store such as Google Play. If the URI points to an app store such as Google Play, the URI should follow Android best practices so the viewing app can directly open the URI to the native app store app instead of a website. If a rental_uris.android field is populated then this field is required, otherwise it is optional. See the “Analytics” section for how viewing apps can report the origin of the deep link to rental apps. Example value: https://play.google.com/store/apps/details?id=com.abcrental.android. See the [Deep Links](#Deep-Links) section for parameters.
+&emsp;- discovery URI | Conditionally Required | A URI that can be used to discover if the rental Android app is installed on the device (e.g., using PackageManager.queryIntentActivities()). This intent is used by viewing apps prioritize rental apps for a particular user based on whether they already have a particular rental app installed. This field is required if a rental_uris.android field is populated, otherwise it is optional. Example value: com.abcrental.android://. See the [Deep Links](#Deep-Links) section for parameters.
+  \- ios          | Optional  | A JSON object that contains rental information for the iOS platform in the store_uri and discovery_uri fields. See the [Deep Links](#Deep-Links) section for parameters.
+&emsp;- store URI | Conditionally Required  | A URI where the rental iOS app can be downloaded from. Typically this will be a URI to an app store such as the Apple App Store. If the URI points to an app store such as the Apple App Store, the URI should follow iOS best practices so the viewing app can directly open the URI to the native app store app instead of a website. If a rental_uris.ios field is populated then this field is required, otherwise it is optional. See the “Analytics” section for how viewing apps can report the origin of the deep link to rental apps. Example value: https://apps.apple.com/app/apple-store/id123456789. See the [Deep Links](#Deep-Links) section for parameters.
+&emsp;- discovery URI  | Conditionally Required | A URI that can be used to discover if the rental iOS app is installed on the device (e.g., using [UIApplication canOpenURL:]). This intent is used by viewing apps prioritize rental apps for a particular user based on whether they already have a particular rental app installed. This field is required if a rental_uris.ios field is populated, otherwise it is optional. Example value: com.abcrental.ios://. See the [Deep Links](#Deep-Links) section for parameters.
 
   
 ### station_information.json
@@ -198,10 +198,10 @@ stations          | Yes       | Array that contains one object per station in th
 \- post_code       | Optional  | Postal code where station is located
 \- rental_methods  | Optional  | Array of enumerables containing the payment methods accepted at this station. <br />Current valid values (in CAPS) are:<br /><ul><li>KEY _(i.e. operator issued bike key / fob / card)_</li> <li>CREDITCARD</li> <li>PAYPASS</li> <li>APPLEPAY</li> <li>ANDROIDPAY</li> <li>TRANSITCARD</li> <li>ACCOUNTNUMBER</li> <li>PHONE</li> </ul> This list is intended to be as comprehensive at the time of publication as possible but is subject to change, as defined in [File Requirements](#file-requirements) above
 \- capacity        | Optional  | Number of total docking points installed at this station, both available and unavailable
-rental uris        | Optional  | A JSON object that contains rental URIs for Android, iOS, and web in the android, ios, and web fields.       
-  \- android       | Optional  | The URI that can be passed to an Android app with an android.intent.action.VIEW Android intent to support Android Deep Links (https://developer.android.com/training/app-links/deep-linking). Please use Android App Links (https://developer.android.com/training/app-links) if possible so viewing apps don’t need to manually manage the redirect of the user to the app store if the user doesn’t have the application installed. This URI should be a deep link specific to this station, and should not be a general rental page that includes information for more than one station. The deep link should take users directly to this station, without any prompts, interstitial pages, or logins. Make sure that users can see this station even if they never previously opened the application.  This is the same principle as the ["first click free"](https://support.google.com/news/publisher/answer/40543) experience for web sites. If this field is empty, it means deep linking isn’t supported in the native Android rental app. Note that URIs do not necessarily include the station_id for this station - other identifiers can be used by the rental app within the URI to uniquely identify this station. See the “Analytics” section for how viewing apps can report the origin of the deep link to rental apps. Android App Links example value: https://www.abc.com/app?sid=1234567890&platform=android Deep Link (without App Links) example value: com.abcrental.android://open.abc.app/app?sid=1234567890
-  \- ios           | Optional  | The URI that can be used on iOS to launch the rental app for this station. More information on this iOS feature can be found here: https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/communicating_with_other_apps_using_custom_urls?language=objc. Please use iOS Universal Links (https://developer.apple.com/ios/universal-links/) if possible so viewing apps don’t need to manually manage the redirect of the user to the app store if the user doesn’t have the application installed. This URI should be a deep link specific to this station, and should not be a general rental page that includes information for more than one station.  The deep link should take users directly to this station, without any prompts, interstitial pages, or logins. Make sure that users can see this station even if they never previously opened the application.  This is the same principle as the ["first click free"](https://support.google.com/news/publisher/answer/40543) experience for web sites. If this field is empty, it means deep linking isn’t supported in the native iOS rental app. Note that the URI does not necessarily include the station_id - other identifiers can be used by the rental app within the URL to uniquely identify this station. See the “Analytics” section for how viewing apps can report the origin of the deep link to rental apps. iOS Universal Links example value: https://www.abc.com/app?sid=1234567890&platform=ios Deep Link (without Universal Links) example value: com.abcrental.ios://open.abc.app/app?sid=1234567890
-  \- web           | Optional  | A URL that can be used by a web browser to show more information about renting a vehicle at this station. This URL should be a deep link specific to this station, and should not be a general rental page that includes information for more than one station.  The deep link should take users directly to this station, without any prompts, interstitial pages, or logins. Make sure that users can see this station even if they never previously opened the application.  This URI should follow ["first click free"](https://support.google.com/news/publisher/answer/40543) experience for web sites. If this field is empty, it means deep linking isn’t supported for web browsers. Example value: https://www.abc.com/app?sid=1234567890
+rental uris        | Optional  | A JSON object that contains rental URIs for Android, iOS, and web in the android, ios, and web fields. See the [Deep Links](#Deep-Links) section for parameters.       
+  \- android       | Optional  | The URI that can be passed to an Android app with an android.intent.action.VIEW Android intent to support Android Deep Links (https://developer.android.com/training/app-links/deep-linking). Please use Android App Links (https://developer.android.com/training/app-links) if possible so viewing apps don’t need to manually manage the redirect of the user to the app store if the user doesn’t have the application installed. This URI should be a deep link specific to this station, and should not be a general rental page that includes information for more than one station. The deep link should take users directly to this station, without any prompts, interstitial pages, or logins. Make sure that users can see this station even if they never previously opened the application.  This is the same principle as the ["first click free"](https://support.google.com/news/publisher/answer/40543) experience for web sites. If this field is empty, it means deep linking isn’t supported in the native Android rental app. Note that URIs do not necessarily include the station_id for this station - other identifiers can be used by the rental app within the URI to uniquely identify this station. See the “Analytics” section for how viewing apps can report the origin of the deep link to rental apps. Android App Links example value: https://www.abc.com/app?sid=1234567890&platform=android Deep Link (without App Links) example value: com.abcrental.android://open.abc.app/app?sid=1234567890. See the [Deep Links](#Deep-Links) section for parameters.
+  \- ios           | Optional  | The URI that can be used on iOS to launch the rental app for this station. More information on this iOS feature can be found here: https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/communicating_with_other_apps_using_custom_urls?language=objc. Please use iOS Universal Links (https://developer.apple.com/ios/universal-links/) if possible so viewing apps don’t need to manually manage the redirect of the user to the app store if the user doesn’t have the application installed. This URI should be a deep link specific to this station, and should not be a general rental page that includes information for more than one station.  The deep link should take users directly to this station, without any prompts, interstitial pages, or logins. Make sure that users can see this station even if they never previously opened the application.  This is the same principle as the ["first click free"](https://support.google.com/news/publisher/answer/40543) experience for web sites. If this field is empty, it means deep linking isn’t supported in the native iOS rental app. Note that the URI does not necessarily include the station_id - other identifiers can be used by the rental app within the URL to uniquely identify this station. See the “Analytics” section for how viewing apps can report the origin of the deep link to rental apps. iOS Universal Links example value: https://www.abc.com/app?sid=1234567890&platform=ios Deep Link (without Universal Links) example value: com.abcrental.ios://open.abc.app/app?sid=1234567890. See the [Deep Links](#Deep-Links) section for parameters.
+  \- web           | Optional  | A URL that can be used by a web browser to show more information about renting a vehicle at this station. This URL should be a deep link specific to this station, and should not be a general rental page that includes information for more than one station.  The deep link should take users directly to this station, without any prompts, interstitial pages, or logins. Make sure that users can see this station even if they never previously opened the application.  This URI should follow ["first click free"](https://support.google.com/news/publisher/answer/40543) experience for web sites. If this field is empty, it means deep linking isn’t supported for web browsers. Example value: https://www.abc.com/app?sid=1234567890. See the [Deep Links](#Deep-Links) section for parameters.
 
 
 
@@ -333,6 +333,145 @@ alerts            | Yes         | Array - alert objects each indicating a separa
 \- summary         | Yes         | String - A short summary of this alert to be displayed to the customer
 \- description     | Optional    | String - Detailed text description of the alert
 \- last_updated    | Optional    | Integer POSIX timestamp indicating the last time the info for the particular alert was updated
+
+## Deep Links
+### Parameters for Analytics in Deeplink URLs
+
+In all of the `rental_*_uri `fields, a viewing app can report the origin of a deep link to request to a rental app by appending the `client_id` parameter to the URI along with the domain name for the viewing app. 
+
+For example, if Google is the viewing app, it can append:
+
+`client_id=google.com` 
+
+...to the URI field to report that Google is the originator of the deep link request. If the rental_android_uri is:
+
+
+`com.abcrental.android://open.abc.app/stations?id=1234567890`
+
+
+
+...then the URI used by Google would be: `com.abcrental.android://open.abc.app/stations?id=1234567890&client_id=google.com`
+
+Other supported parameters include:
+
+
+
+1. `ad_id` - Advertising ID issued to the viewing app (e.g., IFDA on iOS)
+2. `token` - A token identifier that was issued by the rental app to the viewing app.
+
+### Examples
+
+
+#### Example 1 - App Links on Android and Universal Links on iOS are supported
+
+_system_information.json_
+
+
+```
+{
+"last_updated": 1572447999,
+"data": {
+"system_id": "1000",
+"short_name": "ABC Bike Rental",
+"rental_apps": {
+	"android": {
+    "discovery_uri": "com.abcrental.android://"
+},
+"ios": {
+    "discovery_uri": "com.abcrental.ios://"
+}
+ }
+...
+```
+
+
+_station_information.json_
+
+
+```
+"stations":[ 
+   { 
+     "station_id":425,
+     "name":"Coppertail",
+     "lat":27.9563335328521,
+     "Lon":-82.430436084371,
+   "rental_uris": {
+     "android":"https://www.abc.com/app?sid=1234567890&platform=android",
+  	     "ios":"https://www.abc.com/app?sid=1234567890&platform=ios"
+     }
+   },
+   ...
+```
+
+
+Note that the Android URI and iOS Universal Link URLs don’t necessarily use the same identifier as the station_id.
+
+
+#### Example 2 - App Links are not supported on Android and Universal Links are not supported on iOS, but deep links are still supported on Android and iOS
+
+_system_information.json_
+
+
+```
+{
+"last_updated": 1572447999,
+"data": {
+"system_id": "1000",
+"short_name": "ABC Bike Rental",
+"rental_apps": {
+	"android": {
+    "discovery_uri": "com.abcrental.android://"
+    "store_uri": "https://play.google.com/store/apps/details?id=com.abcrental.android",
+},
+"ios": {
+    "store_uri": "https://apps.apple.com/app/apple-store/id123456789",
+    "discovery_uri": "com.abcrental.ios://"
+}
+ }
+
+...
+```
+
+
+_station_information.json_
+
+
+```
+"stations":[ 
+   { 
+   "station_id":425,
+   "name":"Coppertail",
+   "lat":27.9563335328521,
+   "Lon":-82.430436084371,
+ "rental_uris": {
+   	"android":"com.abcrental.android://open.abc.app/app?sid=1234567890",
+    "ios":"com.abcrental.ios://open.abc.app/app?sid=1234567890"
+  }
+   },
+   ...
+```
+
+
+
+#### Example 3 - Deep link web URLs are supported, but not Android or iOS native apps
+
+_station_information.json_
+
+
+```
+"stations":[ 
+   { 
+   "station_id":425,
+   "name":"Coppertail",
+   "lat":27.9563335328521,
+   "Lon":-82.430436084371,
+ "rental_uris": {
+   	"web":"https://www.abc.com/app?sid=1234567890",
+  }
+   },
+   ...
+
+
 
 ## Possible Future Enhancements
 There are some items that were proposed in an earlier version of this document but which do not fit into the current specification. They are collected here for reference and for possible discussion and inclusion in this or a future version.
