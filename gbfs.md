@@ -1,9 +1,11 @@
 
 
 # General Bikeshare Feed Specification (GBFS)
+
 This document explains the types of files and data that comprise the General Bikeshare Feed Specification (GBFS) used by Beryl and defines the fields used in all of those files.
 
 # Reference version
+
 This documentation refers to **v2.1-RC (release candidate)**.
 
 ## Table of Contents
@@ -25,6 +27,7 @@ This documentation refers to **v2.1-RC (release candidate)**.
     * [geofencing_zones.json](#geofencing_zonesjson) *(TBC)*
 
 ## Introduction
+
 This specification has been designed with the following concepts in mind:
 
 * Provide the status of the system at this moment
@@ -33,6 +36,7 @@ This specification has been designed with the following concepts in mind:
 The specification supports real-time travel advice in GBFS-consuming applications.
 
 ## Term Definitions
+
 This section defines terms that are used throughout this document.
 
 * JSON - (JavaScript Object Notation) is a lightweight format for storing and transporting data. This document uses many terms defined by the JSON standard, including field, array, and object. (https://www.w3schools.com/js/js_json_datatypes.asp)
@@ -54,6 +58,7 @@ File Name | Defines
 `geofencing_zones.json` <br/> | Geofencing zones and their associated rules and attributes.
 
 ## File Requirements
+
 * All files should be valid JSON
 * All files in the spec may be published at a URL path or with an alternate name (e.g., `station_info` instead of `station_information.json`).
 * All data should be UTF-8 encoded
@@ -61,6 +66,7 @@ File Name | Defines
 * Pagination is not supported.
 
 ### File Distribution
+
 * If the publisher intends to distribute as individual HTTP endpoints then:
     * Required files must not 404. They should return a properly formatted JSON file as defined in [Output Format](#output-format).
     * Optional files may 404. A 404 of an optional file should not be considered an error.
@@ -74,6 +80,7 @@ File Name | Defines
       * http://microformats.org/wiki/rel-faq#How_is_rel_used
 
 ### Localization
+
 * Each set of data files should be distributed in a single language as defined in system_information.json.
 * A system that wants to publish feeds in multiple languages should do so by publishing multiple distributions, such as:
     * `https://www.example.com/data/en/system_information.json`
@@ -110,7 +117,23 @@ Example: `Asia/Tokyo`, `America/Los_Angeles` or `Africa/Cairo`.
 * GeoJSON FeatureCollection - A FeatureCollection as described by the IETF RFC 7946 https://tools.ietf.org/html/rfc7946#section-3.3.
 * GeoJSON Multipolygon - A Geometry Object as described by the IETF RFC https://tools.ietf.org/html/rfc7946#section-3.1.7.
 
+
+### vehicle
+
+The following definition is for a singular vehicle object, it is usually returned as part of the `vehicles` array property for [station_status.json](#station_statusjson), or as part of the `bikes` array property for [free_bike_status.json](#free_bike_statusjson). When returned as part of [free_bike_status.json](#free_bike_statusjson), the `lat` and `lon` fields are also populated with the vehicle's current location.
+
+Field Name | Type | Defines
+---|---|---
+\-&nbsp;`bike_id` <br/> | ID | Identifier of a vehicle, rotated to a random string, at minimum, after each trip to protect privacy. Note: Persistent bike_id, published publicly, could pose a threat to individual traveler privacy.
+\-&nbsp;`is_reserved` | Boolean | Is the vehicle currently reserved? <br /><br /> `true` - Vehicle is currently reserved. <br /> `false` - Vehicle is not currently reserved.
+\-&nbsp;`is_disabled` | Boolean | Is the vehicle currently disabled (broken)? <br /><br /> `true` - Vehicle is currently disabled. <br /> `false` - Vehicle is not currently disabled.
+\-&nbsp;`vehicle_type_id` <br/> | ID | The vehicle_type_id of this vehicle as described in [vehicle_types.json](#vehicle_typesjson).
+\-&nbsp;`lat` | Latitude | If the vehicle is returned as part of [free_bike_status.json](#free_bike_statusjson), then this field is present. Latitude of the vehicle.
+\-&nbsp;`lon` | Longitude | If the vehicle is returned as part of [free_bike_status.json](#free_bike_statusjson), then this field is present. Longitude of the vehicle.
+\-&nbsp;`current_range_meters` <br/> | Non-negative float | If the corresponding vehicle_type definition for this vehicle has a motor, then this field is required. This value represents the furthest distance in meters that the vehicle can travel without recharging or refueling with the vehicle's current charge or fuel.
+
 ### Output Format
+
 Every JSON file presented in this specification contains the same common header information at the top level of the JSON response object:
 
 Field Name | Type | Defines
@@ -139,9 +162,14 @@ Example:
 Field Name | Type | Defines
 ---|---|---
 `language` | Language | The language that will be used throughout the rest of the files. It must match the value in the [system_information.json](#system_informationjson) file.
-\-&nbsp;`feeds` | Array | An array of all of the feeds that are published by this auto-discovery file. Each element in the array is an object with the keys below.
-&emsp;\-&nbsp;`name` | String | Key identifying the type of feed this is. The key must be the base file name defined in the spec for the corresponding feed type (`system_information` for `system_information.json` file, `station_information` for `station_information.json` file).
-&emsp;\-&nbsp;`url` | URL | URL for the feed. Note that the actual feed endpoints (urls) may not be defined in the `file_name.json` format. For example, a valid feed endpoint could end with `station_info` instead of `station_information.json`.
+\-&nbsp;`feeds` | Array\<feed\> | An array of all of the feeds that are published by this auto-discovery file. Each element in the array is an object with the keys below.
+
+#### feed
+
+Field Name | Type | Defines
+---|---|---
+\-&nbsp;`name` | String | Key identifying the type of feed this is. The key must be the base file name defined in the spec for the corresponding feed type (`system_information` for `system_information.json` file, `station_information` for `station_information.json` file).
+\-&nbsp;`url` | URL | URL for the feed. Note that the actual feed endpoints (urls) may not be defined in the `file_name.json` format. For example, a valid feed endpoint could end with `station_info` instead of `station_information.json`.
 
 Example:
 
@@ -180,6 +208,7 @@ Example:
 ```
 
 ### system_information.json
+
 The following fields are all attributes within the main "data" object for this feed.
 
 Field Name | Type | Defines
@@ -196,7 +225,21 @@ Field Name | Type | Defines
 Example:
 
 ```jsonc
-Example here
+{
+  "last_updated": 1434054678,
+  "ttl": 0,
+  "version": "2.1-RC",
+  "data": {
+    "system_id": "example_1",
+    "language": "en",
+    "name": "example_name",
+    "operator": "example_operator",
+    "url": "http://example.com",
+    "phone_number": "02081111111",
+    "email": "example@example.com",
+    "timezone": "Europe/London"
+  }
+}
 ```
 
 ### vehicle_types.json
@@ -205,12 +248,17 @@ The following fields are all attributes within the main "data" object for this f
 
 Field Name | Type | Defines
 ---|---|---
-`vehicle_types` | Array | Array that contains one object per vehicle type in the system as defined below.
-\- `vehicle_type_id` | ID | Unique identifier of a vehicle type. See [Field Types](#field-types) above for ID field requirements.
-\- `form_factor` | Enum | The vehicle's general form factor. <br /><br />Current valid values are:<br /><ul><li>`bicycle`</li><li>`car`</li><li>`moped`</li><li>`other`</li><li>`scooter`</li></ul>
-\- `propulsion_type` | Enum | The primary propulsion type of the vehicle. <br /><br />Current valid values are:<br /><ul><li>`human` _(Pedal or foot propulsion)_</li><li>`electric_assist` _(Provides power only alongside human propulsion)_</li><li>`electric` _(Contains throttle mode with a battery-powered motor)_</li><li>`combustion` _(Contains throttle mode with a gas engine-powered motor)_</li></ul> This field was insipred by, but differs from the propulsion types field described in the [Open Mobility Foundation Mobility Data Specification](https://github.com/openmobilityfoundation/mobility-data-specification/blob/master/provider/README.md#propulsion-types).
-\- `max_range_meters` | Non-negative float | If the vehicle has a motor (as indicated by having a value other than `human` in the `propulsion_type` field), this field is required. This represents the furthest distance in meters that the vehicle can travel without recharging or refueling when it has the maximum amount of energy potential (for example, a full battery or full tank of gas).
-\- `name` | String | The public name of this vehicle type.
+`vehicle_types` | Array\<vehicle_type\> | Array that contains one object per vehicle type in the system as defined below.
+
+#### vehicle_type
+
+Field Name | Type | Defines
+---|---|---
+\-&nbsp;`vehicle_type_id` | ID | Unique identifier of a vehicle type. See [Field Types](#field-types) above for ID field requirements.
+\-&nbsp;`form_factor` | Enum | The vehicle's general form factor. <br /><br />Current valid values are:<br /><ul><li>`bicycle`</li><li>`car`</li><li>`moped`</li><li>`other`</li><li>`scooter`</li></ul>
+\-&nbsp;`propulsion_type` | Enum | The primary propulsion type of the vehicle. <br /><br />Current valid values are:<br /><ul><li>`human` _(Pedal or foot propulsion)_</li><li>`electric_assist` _(Provides power only alongside human propulsion)_</li><li>`electric` _(Contains throttle mode with a battery-powered motor)_</li><li>`combustion` _(Contains throttle mode with a gas engine-powered motor)_</li></ul> This field was insipred by, but differs from the propulsion types field described in the [Open Mobility Foundation Mobility Data Specification](https://github.com/openmobilityfoundation/mobility-data-specification/blob/master/provider/README.md#propulsion-types).
+\-&nbsp;`max_range_meters` | Non-negative float | If the vehicle has a motor (as indicated by having a value other than `human` in the `propulsion_type` field), this field is required. This represents the furthest distance in meters that the vehicle can travel without recharging or refueling when it has the maximum amount of energy potential (for example, a full battery or full tank of gas).
+\-&nbsp;`name` | String | The public name of this vehicle type.
 
 Example:
 
@@ -247,11 +295,17 @@ Example:
 ```
 
 ### station_information.json
+
 All stations included in station_information.json are considered public (e.g., can be shown on a map for public use). If there are private stations (such as Capital Bikeshare’s White House station), these should not be included here.
 
 Field Name | Type | Defines
 ---|---|---
-`stations` | Array | Array that contains one object per station as defined below.
+`stations` | Array\<station_information\> | Array that contains one object per station as defined below.
+
+#### station_information
+
+Field Name | Type | Defines
+---|---|---
 \-&nbsp;`station_id` | ID | Identifier of a station.
 \-&nbsp;`name` | String | Public name of the station.
 \-&nbsp;`lat` | Latitude | The latitude of station.
@@ -280,11 +334,17 @@ Example:
 ```
 
 ### station_status.json
+
 Describes the capacity and rental availability of a station.
 
 Field Name | Type | Defines
 ---|---|---
-`stations` | Array | Array that contains one object per station in the system as defined below.
+`stations` | Array\<station_status\> | Array that contains one object per station in the system as defined below.
+
+#### station_status
+
+Field Name | Type | Defines
+---|---|---
 \-&nbsp;`station_id` | ID | Identifier of a station see [station_information.json](#station_informationjson).
 \-&nbsp;`num_bikes_available` | Non-negative integer | Number of vehicles of any type available for rental. Number of functional vehicles physically at the station. To know if the vehicles are available for rental, see `is_renting`.
 \-&nbsp;`num_docks_available` | Non-negative integer | Required except for stations that have unlimited docking capacity (e.g. virtual stations). Number of functional docks physically at the station. To know if the docks are accepting vehicle returns, see `is_returning`.
@@ -292,13 +352,7 @@ Field Name | Type | Defines
 \-&nbsp;`is_renting` | Boolean | Is the station currently renting vehicles? <br /><br />`true` - Station is renting vehicles. Even if the station is empty, if it is set to allow rentals this value should be `true`.<br /> `false` - Station is not renting vehicles.
 \-&nbsp;`is_returning` | Boolean | Is the station accepting vehicle returns? <br /><br />`true` - Station is accepting vehicle returns. If a station is full but would allow a return if it was not full, then this value should be `true`.<br /> `false` - Station is not accepting vehicle returns.
 \-&nbsp;`last_reported` | Timestamp | The last time this station reported its status to the operator's backend.
-\- `vehicles` <br/> | Array | This field is required if the [vehicle_types.json](#vehicle_typesjson) file has been defined. This field's value is an array of objects. Each object contains data about a specific vehicle that is currently present at the docking station. Each of these vehicles is assumed to be rentable unless otherwise indicated with the is_reserved or is_disabled flags. All of the remaining fields in this table represent key/values for each vehicle object in this array. The length of this array must equal the value of the `num_bikes_available` field.
-&emsp;\- `bike_id` <br/> | ID | Identifier of a vehicle, rotated to a random string, at minimum, after each trip to protect privacy. Note: Persistent bike_id, published publicly, could pose a threat to individual traveler privacy.
-&emsp;\- `is_reserved` <br/> | Boolean | Is the vehicle currently reserved for someone else
-&emsp;\- `is_disabled` <br/> | Boolean | Is the vehicle currently disabled (broken)
-&emsp;\- `vehicle_type_id` <br/> | ID | The vehicle_type_id of this vehicle as described in [vehicle_types.json](#vehicle_typesjson).
-&emsp;\- `current_range_meters` <br/> | Non-negative float | If the corresponding vehicle_type definition for this vehicle has a motor, then this field is required. This value represents the furthest distance in meters that the vehicle can travel without recharging or refueling with the vehicle's current charge or fuel.
-
+\-&nbsp;`vehicles` <br/> | Array\<vehicle\> | This field's value is an array of vehicle objects. Each object contains data about a specific vehicle that is currently present at the docking station. Each of these vehicles is assumed to be rentable unless otherwise indicated with the is_reserved or is_disabled flags. All of the remaining fields in this table represent key/values for each vehicle object in this array. The length of this array must equal the value of the `num_bikes_available` field.
 
 Example:
 
@@ -359,14 +413,7 @@ Describes vehicles that are not at a station and are not currently in the middle
 
 Field Name | Type | Defines
 ---|---|---
-`bikes` | Array | Array that contains one object per vehicle that is currently stopped as defined below.
-\-&nbsp;`bike_id` | ID | Identifier of a vehicle, rotated to a random string, at minimum, after each trip to protect privacy. Note: Persistent bike_id, published publicly, could pose a threat to individual traveler privacy.
-\-&nbsp;`lat` | Latitude | Latitude of the vehicle.
-\-&nbsp;`lon` | Longitude | Longitude of the vehicle.
-\-&nbsp;`is_reserved` | Boolean | Is the vehicle currently reserved? <br /><br /> `true` - Vehicle is currently reserved. <br /> `false` - Vehicle is not currently reserved.
-\-&nbsp;`is_disabled` | Boolean | Is the vehicle currently disabled (broken)? <br /><br /> `true` - Vehicle is currently disabled. <br /> `false` - Vehicle is not currently disabled.
-\- `vehicle_type_id` <br/> | ID | The vehicle_type_id of this vehicle as described in [vehicle_types.json](#vehicle_typesjson).
-\- `current_range_meters` <br/> | Non-negative float | If the corresponding vehicle_type definition for this vehicle has a motor, then this field is required. This value represents the furthest distance in meters that the vehicle can travel without recharging or refueling with the vehicle's current charge or fuel.
+`bikes` | Array\<vehicle\> | Array that contains one object per vehicle that is currently stopped.
 
 Example:
 
@@ -379,18 +426,18 @@ Example:
     "bikes": [
       {
         "bike_id": "ghi789",
-        "lat": 12.34,
-        "lon": 56.78,
         "is_reserved": false,
         "is_disabled": false,
-        "vehicle_type_id": "abc123"
+        "vehicle_type_id": "abc123",
+        "lat": 12.34,
+        "lon": 56.78
       }, {
         "bike_id": "jkl012",
-        "lat": 12.34,
-        "lon": 56.78,
         "is_reserved": false,
         "is_disabled": false,
         "vehicle_type_id": "def456",
+        "lat": 12.34,
+        "lon": 56.78,
         "current_range_meters": 6543
       }
     ]
@@ -399,21 +446,40 @@ Example:
 ```
 
 ### system_regions.json
+
 Describe regions for a system that is broken up by geographic or political region.
 
 Field Name | Type | Defines
 ---|---|---
-`regions` | Array | Array of objects as defined below.
+`regions` | Array\<region\> | Array of objects as defined below.
+
+#### region
+
+Field Name | Type | Defines
+---|---|---
 \-&nbsp;`region_id` | ID | Identifier for the region.
 \-&nbsp;`name` | String | Public name for this region.
 
 Example:
 
 ```jsonc
-Example here
+{
+  "last_updated": 1434054678,
+  "ttl": 0,
+  "version": "2.1-RC",
+  "data": {
+    "regions": [
+      {
+        "region_id": "region_1",
+        "name": "region_name"
+      }
+    ]
+  }
+}
 ```
 
 ### system_pricing_plans.json
+
 Describes pricing for the system.
 
 Field Name | Type | Defines
@@ -441,24 +507,77 @@ By default, no restrictions apply everywhere. Geofencing zones should be modeled
 Field Name | Type | Defines
 ---|---|---
 `geofencing_zones` | GeoJSON FeatureCollection | Each geofenced zone and its associated rules and attributes is described as an object within the array of features, as follows.
+
+#### GeoJSON FeatureCollection
+
+Field Name | Type | Defines
+---|---|---
 \-&nbsp;`type` | String | “FeatureCollection” (as per IETF [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.3)).
-\-&nbsp;`features` | Array | Array of objects as defined below.
-&emsp;\-&nbsp;`type` | String | “Feature” (as per IETF [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.3)).
-&emsp;\-&nbsp;`geometry` | GeoJSON Multipolygon | A polygon that describes where rides might not be able to start, end, go through, or have other limitations. A clockwise arrangement of points defines the area enclosed by the polygon, while a counterclockwise order defines the area outside the polygon ([right-hand rule](https://tools.ietf.org/html/rfc7946#section-3.1.6)). All geofencing zones contained in this list are public (i.e., can be shown on a map for public use).
-&emsp;\-&nbsp;`properties` | Object | Properties: As defined below, describing travel allowances and limitations.
-&emsp;&emsp;\-&nbsp;`name` | String | Public name of the geofencing zone.
-&emsp;&emsp;\-&nbsp;`start` | Timestamp | Start time of the geofencing zone. If the geofencing zone is always active, this can be omitted.
-&emsp;&emsp;\-&nbsp;`end` | Timestamp | End time of the geofencing zone. If the geofencing zone is always active, this can be omitted.
-&emsp;&emsp;\-&nbsp;`rules` | Array | Array that contains one object per rule as defined below. <br /><br /> In the event of colliding rules within the same polygon, the earlier rule (in order of the JSON file) takes precedence. <br> In the case of overlapping polygons, the combined set of rules associated with the overlapping polygons applies to the union of the polygons. In the event of colliding rules in this set, the earlier rule (in order of the JSON file) also takes precedence.
-&emsp;&emsp;&emsp;\-&nbsp;`vehicle_type_id` | Array | Array of IDs of vehicle types for which any restrictions should be applied (see vehicle type definitions in [PR #136](https://github.com/NABSA/gbfs/pull/136)). If vehicle_type_ids are not specified, then restrictions apply to all vehicle types.
-&emsp;&emsp;&emsp;\-&nbsp;`ride_allowed` | Boolean | Is the undocked (“free bike”) ride allowed to start and end in this zone? <br /><br /> `true` - Undocked (“free bike”) ride can start and end in this zone. <br /> `false` - Undocked (“free bike”) ride cannot start and end in this zone.
-&emsp;&emsp;&emsp;\-&nbsp;`ride_through_allowed` | Boolean | Is the ride allowed to travel through this zone? <br /><br /> `true` - Ride can travel through this zone. <br /> `false` - Ride cannot travel through this zone.
-&emsp;&emsp;&emsp;\-&nbsp;`maximum_speed_kph` | Non-negative Integer | What is the maximum speed allowed, in kilometers per hour? <br /><br /> If there is no maximum speed to observe, this can be omitted.
+\-&nbsp;`features` | Array\<GeoJSON Feature\> | Array of objects as defined below.
+
+#### GeoJSON Feature
+
+Field Name | Type | Defines
+---|---|---
+\-&nbsp;`type` | String | “Feature” (as per IETF [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.3)).
+\-&nbsp;`geometry` | GeoJSON Multipolygon | A polygon that describes where rides might not be able to start, end, go through, or have other limitations. A clockwise arrangement of points defines the area enclosed by the polygon, while a counterclockwise order defines the area outside the polygon ([right-hand rule](https://tools.ietf.org/html/rfc7946#section-3.1.6)). All geofencing zones contained in this list are public (i.e., can be shown on a map for public use).
+\-&nbsp;`properties` | geofence_properties | Properties: As defined below, describing travel allowances and limitations.
+
+#### geofence_properties
+
+Field Name | Type | Defines
+---|---|---
+\-&nbsp;`name` | String | Public name of the geofencing zone.
+\-&nbsp;`rules` | Array\<geofence_rule\> | Array that contains one object per rule as defined below. <br /><br /> In the event of colliding rules within the same polygon, the earlier rule (in order of the JSON file) takes precedence. <br> In the case of overlapping polygons, the combined set of rules associated with the overlapping polygons applies to the union of the polygons. In the event of colliding rules in this set, the earlier rule (in order of the JSON file) also takes precedence.
+
+#### geofence_rule
+
+Field Name | Type | Defines
+---|---|---
+\-&nbsp;`vehicle_type_id` | Array\<ID\> | Array of IDs of vehicle types for which any restrictions should be applied (see vehicle type definitions in [PR #136](https://github.com/NABSA/gbfs/pull/136)). If vehicle_type_ids are not specified, then restrictions apply to all vehicle types.
+\-&nbsp;`ride_allowed` | Boolean | Is the undocked (“free bike”) ride allowed to start and end in this zone? <br /><br /> `true` - Undocked (“free bike”) ride can start and end in this zone. <br /> `false` - Undocked (“free bike”) ride cannot start and end in this zone.
+\-&nbsp;`ride_through_allowed` | Boolean | Is the ride allowed to travel through this zone? <br /><br /> `true` - Ride can travel through this zone. <br /> `false` - Ride cannot travel through this zone.
+\-&nbsp;`maximum_speed_kph` | Non-negative Integer | What is the maximum speed allowed, in kilometers per hour? <br /><br /> If there is no maximum speed to observe, this can be omitted.
 
 Example:
 
 ```jsonc
-Example here
+{
+  "last_updated": 1434054678,
+  "ttl": 0,
+  "version": "2.1-RC",
+  "data": {
+    "geofencing_zones": {
+      "type": "FeatureCollection",
+      "features": [
+	      {
+	        "type": "Feature",
+	        "geometry": {
+	          "type": "Polygon",
+	          "coordinates": [
+	            [100.0, 0.0],
+	            [101.0, 0.0],
+	            [101.0, 1.0],
+	            [100.0, 1.0],
+	            [100.0, 0.0]
+	          ]
+	        },
+	        "properties": {
+	          "name": "main_region",
+	          "rules": [
+	            {
+	              "vehicle_type_id": "def456",
+	              "ride_allowed": true,
+	              "ride_through_allowed": true,
+	              "maximum_speed_kph": 15
+	            }
+	          ]
+	        }
+	      }
+	  ]
+    }
+  }
+}
 ```
 
 ## Disclaimers
