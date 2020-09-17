@@ -11,11 +11,11 @@ This documentation refers to **v2.1-RC (release candidate)**.
 ## Table of Contents
 
 * [Introduction](#introduction)
-* [Version Endpoints](#version-endpoints)
 * [Term Definitions](#term-definitions)
 * [Files](#files)
 * [File Requirements](#file-requirements)
 * [Field Types](#field-types)
+	* [vehicle](#vehicle)
     * [gbfs.json](#gbfsjson)
     * [system_information.json](#system_informationjson)
     * [vehicle_types.json](#vehicle_typesjson)
@@ -165,6 +165,7 @@ Auto-discovery file that links to all of the other files published by the system
 *Note:* Beryl maintains a `gbfs.json` index for listing active systems, in addition to a system level `gbfs.json` index that describes the files within the given system.
 
 Example index url: [http://TODO/gbfs.json](https://beryl.cc/)
+
 Example system index url: [http://TODO/BCP/gbfs.json](https://beryl.cc/)
 
 Field Name | Type | Defines
@@ -344,7 +345,7 @@ Example output:
         "name": "Parking garage A",
         "lat": 12.34,
         "lon": 45.67,
-        "capacity": 8,
+        "capacity": 8
       }
     ]
   }
@@ -372,7 +373,7 @@ Field Name | Type | Defines
 \-&nbsp;`is_renting` | Boolean | Is the station currently renting vehicles? <br /><br />`true` - Station is renting vehicles. Even if the station is empty, if it is set to allow rentals this value should be `true`.<br /> `false` - Station is not renting vehicles.
 \-&nbsp;`is_returning` | Boolean | Is the station accepting vehicle returns? <br /><br />`true` - Station is accepting vehicle returns. If a station is full but would allow a return if it was not full, then this value should be `true`.<br /> `false` - Station is not accepting vehicle returns.
 \-&nbsp;`last_reported` | Timestamp | The last time this station reported its status to the operator's backend.
-\-&nbsp;`vehicles` <br/> | Array\<vehicle\> | This field's value is an array of vehicle objects. Each object contains data about a specific vehicle that is currently present at the docking station. Each of these vehicles is assumed to be rentable unless otherwise indicated with the is_reserved or is_disabled flags. All of the remaining fields in this table represent key/values for each vehicle object in this array. The length of this array must equal the value of the `num_bikes_available` field.
+\-&nbsp;`vehicles` <br/> | Array\<[vehicle](#vehicle)\> | This field's value is an array of [vehicle](#vehicle) objects. Each object contains data about a specific vehicle that is currently present at the docking station. Each of these vehicles is assumed to be rentable unless otherwise indicated with the is_reserved or is_disabled flags. All of the remaining fields in this table represent key/values for each vehicle object in this array. The length of this array must equal the value of the `num_bikes_available` field.
 
 Example output:
 
@@ -390,37 +391,43 @@ Example output:
         "is_returning": true,
         "last_reported": 1434054678,
         "num_docks_available": 3,
-        "vehicles": [{
-          "bike_id": "mno345",
-          "is_reserved": false,
-          "is_disabled": false,
-          "vehicle_type_id": "abc123"
-        }, {
-          "bike_id": "pqr678",
-          "is_reserved": false,
-          "is_disabled": false,
-          "vehicle_type_id": "def456",
-          "current_range_meters": 5432
-        }],
-      }, {
+        "vehicles": [
+          {
+            "bike_id": "mno345",
+            "is_reserved": false,
+            "is_disabled": false,
+            "vehicle_type_id": "abc123"
+          },
+          {
+            "bike_id": "pqr678",
+            "is_reserved": false,
+            "is_disabled": false,
+            "vehicle_type_id": "def456",
+            "current_range_meters": 5432
+          }
+        ],
+      },
+      {
         "station_id": "station 2",
         "is_installed": true,
         "is_renting": true,
         "is_returning": true,
         "last_reported": 1434054678,
         "num_docks_available": 8,
-        "vehicles": [{
-          "bike_id": "stu901",
-          "is_reserved": false,
-          "is_disabled": false,
-          "vehicle_type_id": "abc123"
-        }, {
-          "bike_id": "vwx234",
-          "is_reserved": false,
-          "is_disabled": false,
-          "vehicle_type_id": "def456",
-          "current_range_meters": 4321
-        }]
+        "vehicles": [
+          {
+            "bike_id": "stu901",
+            "is_reserved": false,
+            "is_disabled": false,
+            "vehicle_type_id": "abc123"
+          }, {
+            "bike_id": "vwx234",
+            "is_reserved": false,
+            "is_disabled": false,
+            "vehicle_type_id": "def456",
+            "current_range_meters": 4321
+          }
+        ]
       }
     ]
   }
@@ -435,7 +442,7 @@ Example url: [http://TODO/BCP/free_bike_status.json](https://beryl.cc/)
 
 Field Name | Type | Defines
 ---|---|---
-`bikes` | Array\<vehicle\> | Array that contains one object per vehicle that is currently stopped.
+`bikes` | Array\<[vehicle](#vehicle)\> | Array that contains one object per [vehicle](#vehicle) that is currently stopped.
 
 Example output:
 
@@ -453,7 +460,8 @@ Example output:
         "vehicle_type_id": "abc123",
         "lat": 12.34,
         "lon": 56.78
-      }, {
+      },
+      {
         "bike_id": "jkl012",
         "is_reserved": false,
         "is_disabled": false,
@@ -529,9 +537,9 @@ Field Name | Type | Defines
 
 Field Name | Type | Defines
 ---|---|---
-\-&nbsp;`from_minute` | Non-negative integer | How many minutes can elapse before the pricing is applied (e.g. If this value is 15, it means the first 15 minutes of the ride are free).
+\-&nbsp;`from_minute` | Non-negative integer | How many minutes can elapse before the price rate per minute is applied (e.g. If this value is 15, it means the first 15 minutes of the ride are free).
 \-&nbsp;`minute_price` | Non-negative float | The monetary unit of currency charged for a single minute (e.g. For a plan with currency "GBP", a `minute_price` of 0.05 would equate to 5 British pence per minute).
-\-&nbsp;`vehicle_type_id` | ID | The vehicle_type_id of this vehicle as described in [vehicle_types.json](#vehicle_typesjson).
+\-&nbsp;`vehicle_type_id` | ID | The `vehicle_type_id` of this vehicle as described in [vehicle_types.json](#vehicle_typesjson).
 \-&nbsp;`reset_price` | Non-negative float | The monetary unit of currency charged for starting a ride (e.g. For a plan with currency "GBP", a `reset_price` of 2.0 would equate to £2 (Pound sterling) for starting a ride).
 
 #### additional_fee
@@ -540,14 +548,14 @@ The description for each type of additional fee is as follows:
 
 - `purchase_price` - This type of fee is present if the plan requires an initial purchase.
 - `out_of_bundle_minute_increment_cost` - This type of fee is present if the plan includes a minute overflow charge (e.g. For a 100 minute plan, and a ride with a duration of 120 minutes would include an additional 20x the price of this fee). This fee typically only applies to plans of type `bundle`.
-- `out_of_service_area_parking_charge` - This type of fee is present if the plan includes an additional charge for parking a vehicle outside of the region's geofence zone.
-- `out_of_zone_parking_charge` - This type of fee is present if the plan includes an additional charge for parking a vehicle outside of a station.
+- `out_of_service_area_parking_charge` - This type of fee is present if the plan includes an additional charge for parking a vehicle outside of the region's geofence zones.
+- `out_of_zone_parking_charge` - This type of fee is present if the plan includes an additional charge for parking a vehicle outside of an available station.
 
 Field Name | Type | Defines
 ---|---|---
 \-&nbsp;`fee` | Enum | The type of additional fee that can be applied with this pricing plan.<br /><br />The current values are:<br /><ul><li>`purchase_price`</li><li>`out_of_bundle_minute_increment_cost`</li><li>`out_of_service_area_parking_charge`</li><li>`out_of_zone_parking_charge`</li></ul>
 \-&nbsp;`price` | Non-negative float | The monetary unit of currency charged for the additional fee (e.g. For a plan with currency "GBP", a `price` of 1.5 would equate to £1.50).
-\-&nbsp;`vehicle_type_id` | ID | The vehicle_type_id of this vehicle as described in [vehicle_types.json](#vehicle_typesjson).
+\-&nbsp;`vehicle_type_id` | ID | The `vehicle_type_id` of this vehicle as described in [vehicle_types.json](#vehicle_typesjson).
 
 Example output:
 
@@ -559,121 +567,121 @@ Example output:
   "data": {
     "plans": [
       {
-		"plan_id": "123",
-		"type": "payg",
-		"name": "Pay As You Ride",
-		"description": "Pay As You Ride",
-		"currency": "GBP",
-		"is_taxable": false,
-		"price_rates_per_minute": [
-			{
-				"from_minute": 0,
-				"minute_price": 0.05,
-				"vehicle_type_id": "beryl_bike",
-				"reset_price": 1.0
-			},
-			{
-				"from_minute": 0,
-				"minute_price": 0.1,
-				"vehicle_type_id": "bbe",
-				"reset_price": 1.5
-			}
-		],
-		"additional_fees": [
-			{
-				"fee": "purchase_price",
-				"price": 0.0,
-				"vehicle_type_id": "beryl_bike"
-			},
-			{
-				"fee": "out_of_service_area_parking_charge",
-				"price": 5.0,
-				"vehicle_type_id": "beryl_bike"
-			},
-			{
-				"fee": "out_of_zone_parking_charge",
-				"price": 1.0,
-				"vehicle_type_id": "beryl_bike"
-			},
-			{
-			    "fee": "purchase_price",
-			    "price": 0.0,
-			    "vehicle_type_id": "bbe"
-			},
-			{
-			    "fee": "out_of_service_area_parking_charge",
-			    "price": 5.0,
-			    "vehicle_type_id": "bbe"
-			},
-			{
-			    "fee": "out_of_zone_parking_charge",
-			    "price": 1.0,
-			    "vehicle_type_id": "bbe"
-			}
-		]
+        "plan_id": "123",
+        "type": "payg",
+        "name": "Pay As You Ride",
+        "description": "Pay As You Ride",
+        "currency": "GBP",
+        "is_taxable": false,
+        "price_rates_per_minute": [
+          {
+            "from_minute": 0,
+            "minute_price": 0.05,
+            "vehicle_type_id": "beryl_bike",
+            "reset_price": 1.0
+          },
+          {
+            "from_minute": 0,
+            "minute_price": 0.1,
+            "vehicle_type_id": "bbe",
+            "reset_price": 1.5
+          }
+        ],
+        "additional_fees": [
+          {
+            "fee": "purchase_price",
+            "price": 0.0,
+            "vehicle_type_id": "beryl_bike"
+          },
+          {
+            "fee": "out_of_service_area_parking_charge",
+            "price": 5.0,
+            "vehicle_type_id": "beryl_bike"
+          },
+          {
+            "fee": "out_of_zone_parking_charge",
+            "price": 1.0,
+            "vehicle_type_id": "beryl_bike"
+          },
+          {
+              "fee": "purchase_price",
+              "price": 0.0,
+              "vehicle_type_id": "bbe"
+          },
+          {
+              "fee": "out_of_service_area_parking_charge",
+              "price": 5.0,
+              "vehicle_type_id": "bbe"
+          },
+          {
+              "fee": "out_of_zone_parking_charge",
+              "price": 1.0,
+              "vehicle_type_id": "bbe"
+          }
+        ]
       },
       {
-		"plan_id": "321",
-		"type": "bundle",
-		"name": "100 mins",
-		"description": "100 mins",
-		"currency": "GBP",
-		"is_taxable": false,
-		"price_rates_per_minute": [
-			{
-				"from_minute": 0,
-				"minute_price": 0.0,
-				"vehicle_type_id": "beryl_bike"
-			},
-			{
-				"from_minute": 0,
-				"minute_price": 0.0,
-				"vehicle_type_id": "bbe",
-				"reset_price": 1.5
-			}
-		],
-		"additional_fees": [
-			{
-				"fee": "purchase_price",
-				"price": 5.0,
-				"vehicle_type_id": "beryl_bike"
-			},
-			{
-				"fee": "out_of_bundle_minute_increment_cost",
-				"price": 0.05,
-				"vehicle_type_id": "beryl_bike"
-			},
-			{
-				"fee": "out_of_service_area_parking_charge",
-				"price": 5.0,
-				"vehicle_type_id": "beryl_bike"
-			},
-			{
-				"fee": "out_of_zone_parking_charge",
-				"price": 1.0,
-				"vehicle_type_id": "beryl_bike"
-			},
-			{
-			    "fee": "purchase_price",
-			    "price": 5.0,
-			    "vehicle_type_id": "bbe"
-			},
-			{
-				"fee": "out_of_bundle_minute_increment_cost",
-				"price": 0.1,
-				"vehicle_type_id": "bbe"
-			},
-			{
-			    "fee": "out_of_service_area_parking_charge",
-			    "price": 5.0,
-			    "vehicle_type_id": "bbe"
-			},
-			{
-			    "fee": "out_of_zone_parking_charge",
-			    "price": 1.0,
-			    "vehicle_type_id": "bbe"
-			}
-		]
+        "plan_id": "321",
+        "type": "bundle",
+        "name": "100 mins",
+        "description": "100 mins",
+        "currency": "GBP",
+        "is_taxable": false,
+        "price_rates_per_minute": [
+          {
+            "from_minute": 0,
+            "minute_price": 0.0,
+            "vehicle_type_id": "beryl_bike"
+          },
+          {
+            "from_minute": 0,
+            "minute_price": 0.0,
+            "vehicle_type_id": "bbe",
+            "reset_price": 1.5
+          }
+        ],
+        "additional_fees": [
+          {
+            "fee": "purchase_price",
+            "price": 5.0,
+            "vehicle_type_id": "beryl_bike"
+          },
+          {
+            "fee": "out_of_bundle_minute_increment_cost",
+            "price": 0.05,
+            "vehicle_type_id": "beryl_bike"
+          },
+          {
+            "fee": "out_of_service_area_parking_charge",
+            "price": 5.0,
+            "vehicle_type_id": "beryl_bike"
+          },
+          {
+            "fee": "out_of_zone_parking_charge",
+            "price": 1.0,
+            "vehicle_type_id": "beryl_bike"
+          },
+          {
+              "fee": "purchase_price",
+              "price": 5.0,
+              "vehicle_type_id": "bbe"
+          },
+          {
+            "fee": "out_of_bundle_minute_increment_cost",
+            "price": 0.1,
+            "vehicle_type_id": "bbe"
+          },
+          {
+              "fee": "out_of_service_area_parking_charge",
+              "price": 5.0,
+              "vehicle_type_id": "bbe"
+          },
+          {
+              "fee": "out_of_zone_parking_charge",
+              "price": 1.0,
+              "vehicle_type_id": "bbe"
+          }
+        ]
       }
     ]
   }
@@ -760,7 +768,7 @@ Example output:
 	          ]
 	        }
 	      }
-	  ]
+	    ]
     }
   }
 }
