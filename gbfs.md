@@ -152,7 +152,7 @@ Example:
   "version": "2.1-RC",
   "data": {
     "name": "Beryl",
-    "system_id": "beryl_bcp "
+    "system_id": "beryl_bcp"
   }
 }
 ```
@@ -480,21 +480,178 @@ Example:
 
 ### system_pricing_plans.json
 
-Describes pricing for the system.
+Describes the available pricing plans for the system.
 
 Field Name | Type | Defines
 ---|---|---
-`plans` | Array | Array of objects as defined below.
+`plans` | Array\<plan\> | Array of plan objects as defined below.
+
+#### plan
+
+Field Name | Type | Defines
+---|---|---
 \-&nbsp;`plan_id` | ID | Identifier for a pricing plan in the system.
+\-&nbsp;`type` | Enum | The type of pricing plan.<br /><br />The current values are:<br /><ul><li>`payg` - Pay as you go.</li><li>`bundle` - Minute bundle.</li><li>`day_pass` - Day pass.</li></ul>
 \-&nbsp;`name` | String | Name of this pricing plan.
 \-&nbsp;`currency` | String | Currency used to pay the fare. <br /><br /> This pricing is in ISO 4217 code: http://en.wikipedia.org/wiki/ISO_4217 <br />(e.g. `CAD` for Canadian dollars, `EUR` for euros, or `JPY` for Japanese yen.)
 \-&nbsp;`is_taxable` | Boolean | Will additional tax be added to the base price?<br /><br />`true` - Yes.<br />  `false` - No.  <br /><br />`false` may be used to indicate that tax is not charged or that tax is included in the base price.
 \-&nbsp;`description` | String | Customer-readable description of the pricing plan. This should include the duration, price, conditions, etc. that the publisher would like users to see.
+\-&nbsp;`price_rates_per_minute` | Array\<price_rate_per_minute\> | Customer-readable description of the pricing plan. This should include the duration, price, conditions, etc. that the publisher would like users to see.
+\-&nbsp;`additional_fees` | Array\<additional_fee\> | Customer-readable description of the pricing plan. This should include the duration, price, conditions, etc. that the publisher would like users to see.
+
+#### price_rate_per_minute
+
+Field Name | Type | Defines
+---|---|---
+\-&nbsp;`from_minute` | Non-negative integer | How many minutes can elapse before the pricing is applied (e.g. If this value is 15, it means the first 15 minutes of the ride are free).
+\-&nbsp;`minute_price` | Non-negative float | The monetary unit of currency charged for a single minute (e.g. For a plan with currency "GBP", a `minute_price` of 0.05 would equate to 5 British pence per minute).
+\-&nbsp;`vehicle_type_id` | ID | The vehicle_type_id of this vehicle as described in [vehicle_types.json](#vehicle_typesjson).
+\-&nbsp;`reset_price` | Non-negative float | The monetary unit of currency charged for starting a ride (e.g. For a plan with currency "GBP", a `reset_price` of 2.0 would equate to £2 (Pound sterling) for starting a ride).
+
+#### additional_fee
+
+The description for each type of additional fee is as follows:
+
+- `purchase_price` - This type of fee is present if the plan requires an initial purchase.
+- `out_of_bundle_minute_increment_cost` - This type of fee is present if the plan includes a minute overflow charge (e.g. For a 100 minute plan, and a ride with a duration of 120 minutes would include an additional 20x the price of this fee). This fee typically only applies to plans of type `bundle`.
+- `out_of_service_area_parking_charge` - This type of fee is present if the plan includes an additional charge for parking a vehicle outside of the region's geofence zone.
+- `out_of_zone_parking_charge` - This type of fee is present if the plan includes an additional charge for parking a vehicle outside of a station.
+
+Field Name | Type | Defines
+---|---|---
+\-&nbsp;`fee` | Enum | The type of additional fee that can be applied with this pricing plan.<br /><br />The current values are:<br /><ul><li>`purchase_price`</li><li>`out_of_bundle_minute_increment_cost`</li><li>`out_of_service_area_parking_charge`</li><li>`out_of_zone_parking_charge`</li></ul>
+\-&nbsp;`price` | Non-negative float | The monetary unit of currency charged for the additional fee (e.g. For a plan with currency "GBP", a `price` of 1.5 would equate to £1.50).
+\-&nbsp;`vehicle_type_id` | ID | The vehicle_type_id of this vehicle as described in [vehicle_types.json](#vehicle_typesjson).
 
 Example:
 
 ```jsonc
-Example here
+{
+  "last_updated": 1434054678,
+  "ttl": 0,
+  "version": "2.1-RC",
+  "data": {
+    "plans": [
+      {
+		"plan_id": "123",
+		"type": "payg",
+		"name": "Pay As You Ride",
+		"description": "Pay As You Ride",
+		"currency": "GBP",
+		"is_taxable": false,
+		"price_rates_per_minute": [
+			{
+				"from_minute": 0,
+				"minute_price": 0.05,
+				"vehicle_type_id": "beryl_bike",
+				"reset_price": 1.0
+			},
+			{
+				"from_minute": 0,
+				"minute_price": 0.1,
+				"vehicle_type_id": "bbe",
+				"reset_price": 1.5
+			}
+		],
+		"additional_fees": [
+			{
+				"fee": "purchase_price",
+				"price": 0.0,
+				"vehicle_type_id": "beryl_bike"
+			},
+			{
+				"fee": "out_of_service_area_parking_charge",
+				"price": 5.0,
+				"vehicle_type_id": "beryl_bike"
+			},
+			{
+				"fee": "out_of_zone_parking_charge",
+				"price": 1.0,
+				"vehicle_type_id": "beryl_bike"
+			},
+			{
+			    "fee": "purchase_price",
+			    "price": 0.0,
+			    "vehicle_type_id": "bbe"
+			},
+			{
+			    "fee": "out_of_service_area_parking_charge",
+			    "price": 5.0,
+			    "vehicle_type_id": "bbe"
+			},
+			{
+			    "fee": "out_of_zone_parking_charge",
+			    "price": 1.0,
+			    "vehicle_type_id": "bbe"
+			}
+		]
+      },
+      {
+		"plan_id": "321",
+		"type": "bundle",
+		"name": "100 mins",
+		"description": "100 mins",
+		"currency": "GBP",
+		"is_taxable": false,
+		"price_rates_per_minute": [
+			{
+				"from_minute": 0,
+				"minute_price": 0.0,
+				"vehicle_type_id": "beryl_bike"
+			},
+			{
+				"from_minute": 0,
+				"minute_price": 0.0,
+				"vehicle_type_id": "bbe",
+				"reset_price": 1.5
+			}
+		],
+		"additional_fees": [
+			{
+				"fee": "purchase_price",
+				"price": 5.0,
+				"vehicle_type_id": "beryl_bike"
+			},
+			{
+				"fee": "out_of_bundle_minute_increment_cost",
+				"price": 0.05,
+				"vehicle_type_id": "beryl_bike"
+			},
+			{
+				"fee": "out_of_service_area_parking_charge",
+				"price": 5.0,
+				"vehicle_type_id": "beryl_bike"
+			},
+			{
+				"fee": "out_of_zone_parking_charge",
+				"price": 1.0,
+				"vehicle_type_id": "beryl_bike"
+			},
+			{
+			    "fee": "purchase_price",
+			    "price": 5.0,
+			    "vehicle_type_id": "bbe"
+			},
+			{
+				"fee": "out_of_bundle_minute_increment_cost",
+				"price": 0.1,
+				"vehicle_type_id": "bbe"
+			},
+			{
+			    "fee": "out_of_service_area_parking_charge",
+			    "price": 5.0,
+			    "vehicle_type_id": "bbe"
+			},
+			{
+			    "fee": "out_of_zone_parking_charge",
+			    "price": 1.0,
+			    "vehicle_type_id": "bbe"
+			}
+		]
+      }
+    ]
+  }
+}
 ```
 
 ### geofencing_zones.json
