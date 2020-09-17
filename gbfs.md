@@ -49,13 +49,13 @@ File Name | Defines
 ---|---
 `gbfs.json` | Auto-discovery file that links to all of the other files published by the system.
 `system_information.json` | Details including system operator, system location, year implemented, URL, contact info, time zone.
-`vehicle_types.json` <br/> | Describes the types of vehicles that System operator has available for rent. Required of systems that include information about vehicle types in the station_status and/or free_bike_status files. If this file is not included, then all vehicles in the feed are assumed to be non-motorized bicycles.
-`station_information.json` | List of all stations, their capacities and locations. Required of systems utilizing docks.
-`station_status.json` | Number of available vehicles and docks at each station and station availability. Required of systems utilizing docks.
-`free_bike_status.json` | Vehicles that are available for rent. Required of systems that offer vehicles for rent outside of stations.
-`system_regions.json` | Regions the system is broken up into.
-`system_pricing_plans.json` | System pricing scheme.
-`geofencing_zones.json` <br/> | Geofencing zones and their associated rules and attributes.
+`vehicle_types.json` | Describes the types of vehicles that Beryl has available for rent.
+`station_information.json` | List of all stations, their capacities and locations.
+`station_status.json` | Number of available vehicles and docks at each station and station availability.
+`free_bike_status.json` | Vehicles that are not at a station and are not currently in the middle of an active ride.
+`system_regions.json` | Regions for a system that is broken up by geographic or political region.
+`system_pricing_plans.json` | Lists the available pricing plans for the system.
+`geofencing_zones.json` | Geofencing zones and their associated rules and attributes.
 
 ## File Requirements
 
@@ -144,7 +144,8 @@ Field Name | Type | Defines
 `data` | Object | Response data in the form of `{ name: value }` pairs.
 
 
-Example:
+Example output:
+
 ```jsonc
 {
   "last_updated": 1434054678,
@@ -159,6 +160,13 @@ Example:
 
 ### gbfs.json
 
+Auto-discovery file that links to all of the other files published by the system.
+
+*Note:* Beryl maintains a `gbfs.json` index for listing active systems, in addition to a system level `gbfs.json` index that describes the files within the given system.
+
+Example index url: [http://TODO/gbfs.json](https://beryl.cc/)
+Example system index url: [http://TODO/BCP/gbfs.json](https://beryl.cc/)
+
 Field Name | Type | Defines
 ---|---|---
 `language` | Language | The language that will be used throughout the rest of the files. It must match the value in the [system_information.json](#system_informationjson) file.
@@ -171,7 +179,7 @@ Field Name | Type | Defines
 \-&nbsp;`name` | String | Key identifying the type of feed this is. The key must be the base file name defined in the spec for the corresponding feed type (`system_information` for `system_information.json` file, `station_information` for `station_information.json` file).
 \-&nbsp;`url` | URL | URL for the feed. Note that the actual feed endpoints (urls) may not be defined in the `file_name.json` format. For example, a valid feed endpoint could end with `station_info` instead of `station_information.json`.
 
-Example:
+Example output:
 
 ```jsonc
 {
@@ -209,6 +217,10 @@ Example:
 
 ### system_information.json
 
+Details including system operator, system location, year implemented, URL, contact info, time zone.
+
+Example url: [http://TODO/BCP/system_information.json](https://beryl.cc/)
+
 The following fields are all attributes within the main "data" object for this feed.
 
 Field Name | Type | Defines
@@ -222,7 +234,7 @@ Field Name | Type | Defines
 `email` | Email | Email address actively monitored by the operator’s customer service department. This email address should be a direct contact point where riders can reach a customer service representative.
 `timezone` | Timezone | The time zone where the system is located.
 
-Example:
+Example output:
 
 ```jsonc
 {
@@ -244,6 +256,10 @@ Example:
 
 ### vehicle_types.json
 
+Describes the types of vehicles that Beryl has available for rent.
+
+Example url: [http://TODO/BCP/vehicle_types.json](https://beryl.cc/)
+
 The following fields are all attributes within the main "data" object for this feed.
 
 Field Name | Type | Defines
@@ -256,11 +272,11 @@ Field Name | Type | Defines
 ---|---|---
 \-&nbsp;`vehicle_type_id` | ID | Unique identifier of a vehicle type. See [Field Types](#field-types) above for ID field requirements.
 \-&nbsp;`form_factor` | Enum | The vehicle's general form factor. <br /><br />Current valid values are:<br /><ul><li>`bicycle`</li><li>`car`</li><li>`moped`</li><li>`other`</li><li>`scooter`</li></ul>
-\-&nbsp;`propulsion_type` | Enum | The primary propulsion type of the vehicle. <br /><br />Current valid values are:<br /><ul><li>`human` _(Pedal or foot propulsion)_</li><li>`electric_assist` _(Provides power only alongside human propulsion)_</li><li>`electric` _(Contains throttle mode with a battery-powered motor)_</li><li>`combustion` _(Contains throttle mode with a gas engine-powered motor)_</li></ul> This field was insipred by, but differs from the propulsion types field described in the [Open Mobility Foundation Mobility Data Specification](https://github.com/openmobilityfoundation/mobility-data-specification/blob/master/provider/README.md#propulsion-types).
-\-&nbsp;`max_range_meters` | Non-negative float | If the vehicle has a motor (as indicated by having a value other than `human` in the `propulsion_type` field), this field is required. This represents the furthest distance in meters that the vehicle can travel without recharging or refueling when it has the maximum amount of energy potential (for example, a full battery or full tank of gas).
+\-&nbsp;`propulsion_type` | Enum | The primary propulsion type of the vehicle. <br /><br />Current valid values are:<br /><ul><li>`human` _(Pedal or foot propulsion)_</li><li>`electric_assist` _(Provides power only alongside human propulsion)_</li><li>`electric` _(Contains throttle mode with a battery-powered motor)_</li><li>`combustion` _(Contains throttle mode with a gas engine-powered motor)_</li></ul> This field was inspired by, but differs from the propulsion types field described in the [Open Mobility Foundation Mobility Data Specification](https://github.com/openmobilityfoundation/mobility-data-specification/blob/master/provider/README.md#propulsion-types).
+\-&nbsp;`max_range_meters` | Non-negative float | If the vehicle has a motor (as indicated by having a value other than `human` in the `propulsion_type` field), this field is required. This represents the furthest distance in meters that the vehicle can travel without recharging or refuelling when it has the maximum amount of energy potential (for example, a full battery or full tank of gas).
 \-&nbsp;`name` | String | The public name of this vehicle type.
 
-Example:
+Example output:
 
 ```jsonc
 {
@@ -296,7 +312,9 @@ Example:
 
 ### station_information.json
 
-All stations included in station_information.json are considered public (e.g., can be shown on a map for public use). If there are private stations (such as Capital Bikeshare’s White House station), these should not be included here.
+List of all stations, their capacities and locations.
+
+Example url: [http://TODO/BCP/station_information.json](https://beryl.cc/)
 
 Field Name | Type | Defines
 ---|---|---
@@ -312,7 +330,7 @@ Field Name | Type | Defines
 \-&nbsp;`lon` | Longitude | The longitude of station.
 \-&nbsp;`capacity` | Non-negative integer | Number of total docking points installed at this station, both available and unavailable, regardless of what vehicle types are allowed at each dock. Empty indicates unlimited capacity.
 
-Example:
+Example output:
 
 ```json
 {
@@ -335,7 +353,9 @@ Example:
 
 ### station_status.json
 
-Describes the capacity and rental availability of a station.
+Number of available vehicles and docks at each station and station availability.
+
+Example url: [http://TODO/BCP/station_status.json](https://beryl.cc/)
 
 Field Name | Type | Defines
 ---|---|---
@@ -354,7 +374,7 @@ Field Name | Type | Defines
 \-&nbsp;`last_reported` | Timestamp | The last time this station reported its status to the operator's backend.
 \-&nbsp;`vehicles` <br/> | Array\<vehicle\> | This field's value is an array of vehicle objects. Each object contains data about a specific vehicle that is currently present at the docking station. Each of these vehicles is assumed to be rentable unless otherwise indicated with the is_reserved or is_disabled flags. All of the remaining fields in this table represent key/values for each vehicle object in this array. The length of this array must equal the value of the `num_bikes_available` field.
 
-Example:
+Example output:
 
 ```jsonc
 {
@@ -409,13 +429,15 @@ Example:
 
 ### free_bike_status.json
 
-Describes vehicles that are not at a station and are not currently in the middle of an active ride.
+Vehicles that are not at a station and are not currently in the middle of an active ride.
+
+Example url: [http://TODO/BCP/free_bike_status.json](https://beryl.cc/)
 
 Field Name | Type | Defines
 ---|---|---
 `bikes` | Array\<vehicle\> | Array that contains one object per vehicle that is currently stopped.
 
-Example:
+Example output:
 
 ```jsonc
 {
@@ -447,7 +469,9 @@ Example:
 
 ### system_regions.json
 
-Describe regions for a system that is broken up by geographic or political region.
+Regions for a system that is broken up by geographic or political region.
+
+Example url: [http://TODO/BCP/system_regions.json](https://beryl.cc/)
 
 Field Name | Type | Defines
 ---|---|---
@@ -460,7 +484,7 @@ Field Name | Type | Defines
 \-&nbsp;`region_id` | ID | Identifier for the region.
 \-&nbsp;`name` | String | Public name for this region.
 
-Example:
+Example output:
 
 ```jsonc
 {
@@ -480,7 +504,9 @@ Example:
 
 ### system_pricing_plans.json
 
-Describes the available pricing plans for the system.
+Lists the available pricing plans for the system.
+
+Example url: [http://TODO/BCP/system_pricing_plans.json](https://beryl.cc/)
 
 Field Name | Type | Defines
 ---|---|---
@@ -523,7 +549,7 @@ Field Name | Type | Defines
 \-&nbsp;`price` | Non-negative float | The monetary unit of currency charged for the additional fee (e.g. For a plan with currency "GBP", a `price` of 1.5 would equate to £1.50).
 \-&nbsp;`vehicle_type_id` | ID | The vehicle_type_id of this vehicle as described in [vehicle_types.json](#vehicle_typesjson).
 
-Example:
+Example output:
 
 ```jsonc
 {
@@ -658,8 +684,11 @@ Example:
 
 **Note:** *The following section is still in progress.*
 
-Describes geofencing zones and their associated rules and attributes.<br />
-By default, no restrictions apply everywhere. Geofencing zones should be modeled according to restrictions rather than allowance. An operational area (outside of which vehicles cannot be used) should be defined with a counterclockwise polygon, and a limitation area (in which vehicles can be used under certain restrictions) should be defined with a clockwise polygon.
+Geofencing zones and their associated rules and attributes.
+
+By default, no restrictions apply everywhere. Geofencing zones should be modelled according to restrictions rather than allowance. An operational area (outside of which vehicles cannot be used) should be defined with a counterclockwise polygon, and a limitation area (in which vehicles can be used under certain restrictions) should be defined with a clockwise polygon.
+
+Example url: [http://TODO/BCP/geofencing_zones.json](https://beryl.cc/)
 
 Field Name | Type | Defines
 ---|---|---
@@ -696,7 +725,7 @@ Field Name | Type | Defines
 \-&nbsp;`ride_through_allowed` | Boolean | Is the ride allowed to travel through this zone? <br /><br /> `true` - Ride can travel through this zone. <br /> `false` - Ride cannot travel through this zone.
 \-&nbsp;`maximum_speed_kph` | Non-negative Integer | What is the maximum speed allowed, in kilometers per hour? <br /><br /> If there is no maximum speed to observe, this can be omitted.
 
-Example:
+Example output:
 
 ```jsonc
 {
