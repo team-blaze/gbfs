@@ -1,3 +1,5 @@
+For the Beryl specific documentation see the `beryl-gbfs-docs` branch or click [this link here](https://github.com/team-blaze/gbfs/blob/beryl-gbfs-docs/gbfs.md).
+
 # General Bikeshare Feed Specification
 Documentation for the General Bikeshare Feed Specification, a standardized data feed for bike share system availability.
 
