@@ -35,12 +35,12 @@ The data in the specification contained in this document is intended for consump
   * [#195](https://github.com/NABSA/gbfs/pull/195) - Clarify `num_bikes_available` and `num_docks_available`
   * [#196](https://github.com/NABSA/gbfs/pull/196) - Change boolean from 1/0 to true/false
   * [#147](https://github.com/NABSA/gbfs/pull/147) - Rotate `bike_id` on `free_bike_status`
-* **[v2.0: Current version](https://github.com/NABSA/gbfs/blob/v2.0/gbfs.md)**
+* [v2.0:](https://github.com/NABSA/gbfs/blob/v2.0/gbfs.md)
   * [#189](https://github.com/NABSA/gbfs/pull/189) - Require autodiscovery gbfs.json file, define feed names
   * [#195](https://github.com/NABSA/gbfs/pull/195) - Clarify `num_bikes_available` and `num_docks_available`
   * [#196](https://github.com/NABSA/gbfs/pull/196) - Change boolean from 1/0 to true/false
   * [#147](https://github.com/NABSA/gbfs/pull/147) - Rotate `bike_id` on `free_bike_status`
-* [v2.1-RC (Release Candidate)](https://github.com/NABSA/gbfs/blob/v2.1-RC/gbfs.md)
+* **[v2.1-RC (Release Candidate)](https://github.com/NABSA/gbfs/blob/v2.1-RC/gbfs.md)**
   * [#136](https://github.com/NABSA/gbfs/pull/136) - Add vehicle type definitions
   * [#219](https://github.com/NABSA/gbfs/pull/219) - Add geofencing, virtual station, and dockless support 
 
