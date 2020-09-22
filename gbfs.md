@@ -164,9 +164,9 @@ Auto-discovery file that links to all of the other files published by the system
 
 *Note:* Beryl maintains a `gbfs.json` index for listing active systems, in addition to a system level `gbfs.json` index that describes the files within the given system.
 
-Example index url: [http://TODO/gbfs.json](https://beryl.cc/)
+Example index url: [http://gbfs.basis-pdn.bike/v2/gbfs.json](http://gbfs.basis-pdn.bike/v2/gbfs.json)
 
-Example system index url: [http://TODO/BCP/gbfs.json](https://beryl.cc/)
+Example system index url: [http://gbfs.basis-pdn.bike/v2/BCP/gbfs.json](http://gbfs.basis-pdn.bike/v2/BCP/gbfs.json)
 
 Field Name | Type | Defines
 ---|---|---
@@ -220,7 +220,7 @@ Example output:
 
 Details including system operator, system location, year implemented, URL, contact info, time zone.
 
-Example url: [http://TODO/BCP/system_information.json](https://beryl.cc/)
+Example url: [http://gbfs.basis-pdn.bike/v2/BCP/system_information.json](http://gbfs.basis-pdn.bike/v2/BCP/system_information.json)
 
 The following fields are all attributes within the main "data" object for this feed.
 
@@ -259,7 +259,7 @@ Example output:
 
 Describes the types of vehicles that Beryl has available for rent.
 
-Example url: [http://TODO/BCP/vehicle_types.json](https://beryl.cc/)
+Example url: [http://gbfs.basis-pdn.bike/v2/BCP/vehicle_types.json](http://gbfs.basis-pdn.bike/v2/BCP/vehicle_types.json)
 
 The following fields are all attributes within the main "data" object for this feed.
 
@@ -315,7 +315,7 @@ Example output:
 
 List of all stations, their capacities and locations.
 
-Example url: [http://TODO/BCP/station_information.json](https://beryl.cc/)
+Example url: [http://gbfs.basis-pdn.bike/v2/BCP/station_information.json](http://gbfs.basis-pdn.bike/v2/BCP/station_information.json)
 
 Field Name | Type | Defines
 ---|---|---
@@ -356,7 +356,7 @@ Example output:
 
 Number of available vehicles and docks at each station and station availability.
 
-Example url: [http://TODO/BCP/station_status.json](https://beryl.cc/)
+Example url: [http://gbfs.basis-pdn.bike/v2/BCP/station_status.json](http://gbfs.basis-pdn.bike/v2/BCP/station_status.json)
 
 Field Name | Type | Defines
 ---|---|---
@@ -438,7 +438,7 @@ Example output:
 
 Vehicles that are not at a station and are not currently in the middle of an active ride.
 
-Example url: [http://TODO/BCP/free_bike_status.json](https://beryl.cc/)
+Example url: [http://gbfs.basis-pdn.bike/v2/BCP/free_bike_status.json](http://gbfs.basis-pdn.bike/v2/BCP/free_bike_status.json)
 
 Field Name | Type | Defines
 ---|---|---
@@ -479,7 +479,7 @@ Example output:
 
 Regions for a system that is broken up by geographic or political region.
 
-Example url: [http://TODO/BCP/system_regions.json](https://beryl.cc/)
+Example url: [http://gbfs.basis-pdn.bike/v2/BCP/system_regions.json](http://gbfs.basis-pdn.bike/v2/BCP/system_regions.json)
 
 Field Name | Type | Defines
 ---|---|---
@@ -514,7 +514,7 @@ Example output:
 
 Lists the available pricing plans for the system.
 
-Example url: [http://TODO/BCP/system_pricing_plans.json](https://beryl.cc/)
+Example url: [http://gbfs.basis-pdn.bike/v2/BCP/system_pricing_plans.json](http://gbfs.basis-pdn.bike/v2/BCP/system_pricing_plans.json)
 
 Field Name | Type | Defines
 ---|---|---
@@ -696,7 +696,7 @@ Geofencing zones and their associated rules and attributes.
 
 By default, no restrictions apply everywhere. Geofencing zones should be modelled according to restrictions rather than allowance. An operational area (outside of which vehicles cannot be used) should be defined with a counterclockwise polygon, and a limitation area (in which vehicles can be used under certain restrictions) should be defined with a clockwise polygon.
 
-Example url: [http://TODO/BCP/geofencing_zones.json](https://beryl.cc/)
+Example url: [TBC](https://beryl.cc/)
 
 Field Name | Type | Defines
 ---|---|---
