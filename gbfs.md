@@ -1,5 +1,3 @@
-
-
 # General Bikeshare Feed Specification (GBFS)
 
 This document explains the types of files and data that comprise the General Bikeshare Feed Specification (GBFS) used by Beryl and defines the fields used in all of those files.
@@ -11,6 +9,7 @@ This documentation refers to **v2.1-RC (release candidate)**.
 ## Table of Contents
 
 * [Introduction](#introduction)
+* [Active Systems (Beryl)](#active-systems-beryl)
 * [Term Definitions](#term-definitions)
 * [Files](#files)
 * [File Requirements](#file-requirements)
@@ -34,6 +33,20 @@ This specification has been designed with the following concepts in mind:
 * Do not provide information whose primary purpose is historical
 
 The specification supports real-time travel advice in GBFS-consuming applications.
+
+## Active Systems (Beryl)
+
+The table below lists the active systems  Beryl maintains.
+
+System Name | Location | URL
+---|---|---
+BCP | Bournemouth, Christchurch, Poole, GB | [http://gbfs.basis-pdn.bike/v2/BCP/gbfs.json](http://gbfs.basis-pdn.bike/v2/BCP/gbfs.json)
+London | London, GB | [http://gbfs.basis-pdn.bike/v2/London/gbfs.json](http://gbfs.basis-pdn.bike/v2/London/gbfs.json)
+Hereford | Hereford, GB | [http://gbfs.basis-pdn.bike/v2/Hereford/gbfs.json](http://gbfs.basis-pdn.bike/v2/Hereford/gbfs.json)
+Norwich | Norwich, GB | [http://gbfs.basis-pdn.bike/v2/Norwich/gbfs.json](http://gbfs.basis-pdn.bike/v2/Norwich/gbfs.json)
+Watford | Watford, GB | [http://gbfs.basis-pdn.bike/v2/Watford/gbfs.json](http://gbfs.basis-pdn.bike/v2/Watford/gbfs.json)
+
+As new systems get added, this list may not always reflect the most up-to-date information, so please refer to the main GBFS index located at this url: [http://gbfs.basis-pdn.bike/v2/gbfs.json](http://gbfs.basis-pdn.bike/v2/gbfs.json) for an accurate list of currently active systems.
 
 ## Term Definitions
 
