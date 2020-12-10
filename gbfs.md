@@ -40,13 +40,13 @@ The table below lists the active systems  Beryl maintains.
 
 System Name | Location | URL
 ---|---|---
-BCP | Bournemouth, Christchurch, Poole, GB | [http://gbfs.basis-pdn.bike/v2/BCP/gbfs.json](http://gbfs.basis-pdn.bike/v2/BCP/gbfs.json)
-London | London, GB | [http://gbfs.basis-pdn.bike/v2/London/gbfs.json](http://gbfs.basis-pdn.bike/v2/London/gbfs.json)
-Hereford | Hereford, GB | [http://gbfs.basis-pdn.bike/v2/Hereford/gbfs.json](http://gbfs.basis-pdn.bike/v2/Hereford/gbfs.json)
-Norwich | Norwich, GB | [http://gbfs.basis-pdn.bike/v2/Norwich/gbfs.json](http://gbfs.basis-pdn.bike/v2/Norwich/gbfs.json)
-Watford | Watford, GB | [http://gbfs.basis-pdn.bike/v2/Watford/gbfs.json](http://gbfs.basis-pdn.bike/v2/Watford/gbfs.json)
+BCP | Bournemouth, Christchurch, Poole, GB | [https://gbfs.beryl.cc/v2/BCP/gbfs.json](https://gbfs.beryl.cc/v2/BCP/gbfs.json)
+London | London, GB | [https://gbfs.beryl.cc/v2/London/gbfs.json](https://gbfs.beryl.cc/v2/London/gbfs.json)
+Hereford | Hereford, GB | [https://gbfs.beryl.cc/v2/Hereford/gbfs.json](https://gbfs.beryl.cc/v2/Hereford/gbfs.json)
+Norwich | Norwich, GB | [https://gbfs.beryl.cc/v2/Norwich/gbfs.json](https://gbfs.beryl.cc/v2/Norwich/gbfs.json)
+Watford | Watford, GB | [https://gbfs.beryl.cc/v2/Watford/gbfs.json](https://gbfs.beryl.cc/v2/Watford/gbfs.json)
 
-As new systems get added, this list may not always reflect the most up-to-date information, so please refer to the main GBFS index located at this url: [http://gbfs.basis-pdn.bike/v2/gbfs.json](http://gbfs.basis-pdn.bike/v2/gbfs.json) for an accurate list of currently active systems.
+As new systems get added, this list may not always reflect the most up-to-date information, so please refer to the main GBFS index located at this url: [https://gbfs.beryl.cc/v2/gbfs.json](https://gbfs.beryl.cc/v2/gbfs.json) for an accurate list of currently active systems.
 
 ## Term Definitions
 
@@ -177,9 +177,9 @@ Auto-discovery file that links to all of the other files published by the system
 
 *Note:* Beryl maintains a `gbfs.json` index for listing active systems, in addition to a system level `gbfs.json` index that describes the files within the given system.
 
-Example index url: [http://gbfs.basis-pdn.bike/v2/gbfs.json](http://gbfs.basis-pdn.bike/v2/gbfs.json)
+Example index url: [https://gbfs.beryl.cc/v2/gbfs.json](https://gbfs.beryl.cc/v2/gbfs.json)
 
-Example system index url: [http://gbfs.basis-pdn.bike/v2/BCP/gbfs.json](http://gbfs.basis-pdn.bike/v2/BCP/gbfs.json)
+Example system index url: [https://gbfs.beryl.cc/v2/BCP/gbfs.json](https://gbfs.beryl.cc/v2/BCP/gbfs.json)
 
 Field Name | Type | Defines
 ---|---|---
@@ -233,7 +233,7 @@ Example output:
 
 Details including system operator, system location, year implemented, URL, contact info, time zone.
 
-Example url: [http://gbfs.basis-pdn.bike/v2/BCP/system_information.json](http://gbfs.basis-pdn.bike/v2/BCP/system_information.json)
+Example url: [https://gbfs.beryl.cc/v2/BCP/system_information.json](https://gbfs.beryl.cc/v2/BCP/system_information.json)
 
 The following fields are all attributes within the main "data" object for this feed.
 
@@ -272,7 +272,7 @@ Example output:
 
 Describes the types of vehicles that Beryl has available for rent.
 
-Example url: [http://gbfs.basis-pdn.bike/v2/BCP/vehicle_types.json](http://gbfs.basis-pdn.bike/v2/BCP/vehicle_types.json)
+Example url: [https://gbfs.beryl.cc/v2/BCP/vehicle_types.json](https://gbfs.beryl.cc/v2/BCP/vehicle_types.json)
 
 The following fields are all attributes within the main "data" object for this feed.
 
@@ -328,7 +328,7 @@ Example output:
 
 List of all stations, their capacities and locations.
 
-Example url: [http://gbfs.basis-pdn.bike/v2/BCP/station_information.json](http://gbfs.basis-pdn.bike/v2/BCP/station_information.json)
+Example url: [https://gbfs.beryl.cc/v2/BCP/station_information.json](https://gbfs.beryl.cc/v2/BCP/station_information.json)
 
 Field Name | Type | Defines
 ---|---|---
@@ -369,7 +369,7 @@ Example output:
 
 Number of available vehicles and docks at each station and station availability.
 
-Example url: [http://gbfs.basis-pdn.bike/v2/BCP/station_status.json](http://gbfs.basis-pdn.bike/v2/BCP/station_status.json)
+Example url: [https://gbfs.beryl.cc/v2/BCP/station_status.json](https://gbfs.beryl.cc/v2/BCP/station_status.json)
 
 Field Name | Type | Defines
 ---|---|---
@@ -451,7 +451,7 @@ Example output:
 
 Vehicles that are not at a station and are not currently in the middle of an active ride.
 
-Example url: [http://gbfs.basis-pdn.bike/v2/BCP/free_bike_status.json](http://gbfs.basis-pdn.bike/v2/BCP/free_bike_status.json)
+Example url: [https://gbfs.beryl.cc/v2/BCP/free_bike_status.json](https://gbfs.beryl.cc/v2/BCP/free_bike_status.json)
 
 Field Name | Type | Defines
 ---|---|---
@@ -492,7 +492,7 @@ Example output:
 
 Regions for a system that is broken up by geographic or political region.
 
-Example url: [http://gbfs.basis-pdn.bike/v2/BCP/system_regions.json](http://gbfs.basis-pdn.bike/v2/BCP/system_regions.json)
+Example url: [https://gbfs.beryl.cc/v2/BCP/system_regions.json](https://gbfs.beryl.cc/v2/BCP/system_regions.json)
 
 Field Name | Type | Defines
 ---|---|---
@@ -527,7 +527,7 @@ Example output:
 
 Lists the available pricing plans for the system.
 
-Example url: [http://gbfs.basis-pdn.bike/v2/BCP/system_pricing_plans.json](http://gbfs.basis-pdn.bike/v2/BCP/system_pricing_plans.json)
+Example url: [https://gbfs.beryl.cc/v2/BCP/system_pricing_plans.json](https://gbfs.beryl.cc/v2/BCP/system_pricing_plans.json)
 
 Field Name | Type | Defines
 ---|---|---
