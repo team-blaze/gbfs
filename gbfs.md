@@ -23,7 +23,7 @@ This documentation refers to **v2.1-RC (release candidate)**.
   - [free_bike_status.json](#free_bike_statusjson)
   - [system_regions.json](#system_regionsjson)
   - [system_pricing_plans.json](#system_pricing_plansjson)
-  - [geofencing_zones.json](#geofencing_zonesjson) _(TBC)_
+  - [geofencing_zones.json](#geofencing_zonesjson)
 
 ## Introduction
 
@@ -703,13 +703,11 @@ Example output:
 
 ### geofencing_zones.json
 
-**Note:** _The following section is still in progress._
-
 Geofencing zones and their associated rules and attributes.
 
 By default, no restrictions apply everywhere. Geofencing zones should be modelled according to restrictions rather than allowance. An operational area (outside of which vehicles cannot be used) should be defined with a counterclockwise polygon, and a limitation area (in which vehicles can be used under certain restrictions) should be defined with a clockwise polygon.
 
-Example url: [TBC](https://beryl.cc/)
+Example url: [https://gbfs.beryl.cc/v2/BCP/geofencing_zones.json](https://gbfs.beryl.cc/v2/BCP/geofencing_zones.json)
 
 | Field Name         | Type                      | Defines                                                                                                                         |
 | ------------------ | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -728,23 +726,13 @@ Example url: [TBC](https://beryl.cc/)
 | -------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | \-&nbsp;`type`       | String               | “Feature” (as per IETF [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.3)).                                                                                                                                                                                                                                                                                                                                                      |
 | \-&nbsp;`geometry`   | GeoJSON Multipolygon | A polygon that describes where rides might not be able to start, end, go through, or have other limitations. A clockwise arrangement of points defines the area enclosed by the polygon, while a counterclockwise order defines the area outside the polygon ([right-hand rule](https://tools.ietf.org/html/rfc7946#section-3.1.6)). All geofencing zones contained in this list are public (i.e., can be shown on a map for public use). |
-| \-&nbsp;`properties` | geofence_properties  | Properties: As defined below, describing travel allowances and limitations.                                                                                                                                                                                                                                                                                                                                                               |
+| \-&nbsp;`properties` | geofence_properties  | Properties: As defined below. |
 
 #### geofence_properties
 
 | Field Name      | Type                   | Defines                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | --------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| \-&nbsp;`name`  | String                 | Public name of the geofencing zone.                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| \-&nbsp;`rules` | Array\<geofence_rule\> | Array that contains one object per rule as defined below. <br /><br /> In the event of colliding rules within the same polygon, the earlier rule (in order of the JSON file) takes precedence. <br> In the case of overlapping polygons, the combined set of rules associated with the overlapping polygons applies to the union of the polygons. In the event of colliding rules in this set, the earlier rule (in order of the JSON file) also takes precedence. |
-
-#### geofence_rule
-
-| Field Name                     | Type                 | Defines                                                                                                                                                                                                                                              |
-| ------------------------------ | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| \-&nbsp;`vehicle_type_id`      | Array\<ID\>          | Array of IDs of vehicle types for which any restrictions should be applied (see vehicle type definitions in [PR #136](https://github.com/NABSA/gbfs/pull/136)). If vehicle_type_ids are not specified, then restrictions apply to all vehicle types. |
-| \-&nbsp;`ride_allowed`         | Boolean              | Is the undocked (“free bike”) ride allowed to start and end in this zone? <br /><br /> `true` - Undocked (“free bike”) ride can start and end in this zone. <br /> `false` - Undocked (“free bike”) ride cannot start and end in this zone.          |
-| \-&nbsp;`ride_through_allowed` | Boolean              | Is the ride allowed to travel through this zone? <br /><br /> `true` - Ride can travel through this zone. <br /> `false` - Ride cannot travel through this zone.                                                                                     |
-| \-&nbsp;`maximum_speed_kph`    | Non-negative Integer | What is the maximum speed allowed, in kilometers per hour? <br /><br /> If there is no maximum speed to observe, this can be omitted.                                                                                                                |
+| \-&nbsp;`name`  | String | Public name of the geofencing zone. |
 
 Example output:
 
@@ -770,15 +758,7 @@ Example output:
             ]
           },
           "properties": {
-            "name": "main_region",
-            "rules": [
-              {
-                "vehicle_type_id": "def456",
-                "ride_allowed": true,
-                "ride_through_allowed": true,
-                "maximum_speed_kph": 15
-              }
-            ]
+            "name": "Main region"
           }
         }
       ]
