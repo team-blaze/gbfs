@@ -46,6 +46,7 @@ The table below lists the active systems Beryl maintains.
 | London        | London, GB                           | [https://gbfs.beryl.cc/v2/London/gbfs.json](https://gbfs.beryl.cc/v2/London/gbfs.json)               |
 | Norwich       | Norwich, GB                          | [https://gbfs.beryl.cc/v2/Norwich/gbfs.json](https://gbfs.beryl.cc/v2/Norwich/gbfs.json)             |
 | Watford       | Watford, GB                          | [https://gbfs.beryl.cc/v2/Watford/gbfs.json](https://gbfs.beryl.cc/v2/Watford/gbfs.json)             |
+| West Midlands | West Midlands, GB                    | [https://gbfs.beryl.cc/v2/West_Midlands/gbfs.json](https://gbfs.beryl.cc/v2/West_Midlands/gbfs.json) |
 
 As new systems get added, this list may not always reflect the most up-to-date information, so please refer to the main GBFS index located at this url: [https://gbfs.beryl.cc/v2/gbfs.json](https://gbfs.beryl.cc/v2/gbfs.json) for an accurate list of currently active systems.
 
